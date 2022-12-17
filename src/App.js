@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HabitScreen from './screens/HabitScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import SignInScreen from './screens/SignInScreen';
+import HabitTodayScreen from './screens/HabitTodayScreen';
+import HistoryScreen from './screens/HistoryScreen';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+<BrowserRouter>
+  <Routes>
+     <Route path="/" element={<SignInScreen/>}/>
+     <Route path="/cadastro" element={<SignUpScreen/>}/>
+     <Route path="/habitos" element={<HabitScreen/>}/>
+     <Route path="/hoje" element={<HabitTodayScreen/>}/>
+     <Route path="/historico" element={<HistoryScreen/>}/>
+  </Routes>
+</BrowserRouter>
   );
 }
 
