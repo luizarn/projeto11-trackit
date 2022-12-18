@@ -1,11 +1,14 @@
 import styled from "styled-components";
-import imageNavBar from '../assets/imageNavBar.png'
+import ImageContext from '../contexts/ImageContext'
+import { useContext } from 'react'
 
 export default function Navbar(){
+const [imageProfile, setImageProfile] = useContext(ImageContext)
+
 return(
 <NavContainer>
     <h1>TrackIt</h1>
-    <img src={imageNavBar} alt="imagem"/>
+    <img src={imageProfile} alt="imagem"/>
 </NavContainer>
 )
 }

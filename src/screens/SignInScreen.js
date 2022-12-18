@@ -1,22 +1,70 @@
 import logo from '../assets/logo.png'
 import styled from "styled-components"
+import { Link } from 'react-router-dom'
+import { useContext, useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+import ImageContext from '../contexts/ImageContext'
 
 export default function WelcomeScreen(){
+const [email, setEmail] = useState("")
+const [password, setPassword] = useState("")
+const [imageProfile, setImageProfile] = useContext(ImageContext)
+const [logged, setLogged] = useState(false)
+const navigate = useNavigate()
+
+function addLogin(e){
+    e.preventDefault()
+    setLogged(true)
+    const informations = {  
+        email: email,
+        password: password
+    }
+    const url_post = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+    const promise = axios.post(url_post, informations)
+
+    promise.then(res => {
+        console.log(res.data)
+        navigate("/hoje")
+        setImageProfile(res.data.image)
+    })
+    promise.catch(err => {
+        alert(err.response.data.message)
+        setLogged(false)
+        setPassword("")
+        setEmail("")
+    })
+
+}
+
 
     return (
         <ScreenContainer>
             <Logo src={logo}/>
-            <Form>
+            <Form onSubmit={addLogin}>
             <input
+            data-test="email-input"
+            disabled={logged? "disabled" : ""}
             type="text"
             placeholder="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
             />
             <input
+            data-test="password-input"
+            disabled={logged? "disabled" : ""}
             type="text"
             placeholder="senha"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
             />
-            <OpenButton >Entrar</OpenButton>
-            <p>Não tem uma conta? Cadastra-se!</p>
+           
+            <OpenButton data-test="login-btn">Entrar</OpenButton>
+            <Link to={"/cadastro"}>
+            <p data-test="singup-link">Não tem uma conta? Cadastra-se!</p>
+            </Link>
             </Form>
         </ScreenContainer>
     )

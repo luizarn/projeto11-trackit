@@ -1,33 +1,98 @@
 import logo from '../assets/logo.png'
 import styled from "styled-components"
+import { useState } from "react"
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 export default function SignUpScreen(){
+
+const [email, setEmail] = useState("")
+const [password, setPassword] = useState("")
+const [name, setName] = useState("")
+const [image, setImage] = useState("")
+const [logged, setLogged] = useState(false)
+const navigate = useNavigate()
+
+function addUser(e){
+    e.preventDefault()
+    setLogged(true)
+    const informations = {  
+        email: email,
+        name: name,
+        image: image,
+        password: password
+    }
+    const url_post = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
+    const promise = axios.post(url_post, informations)
+
+    promise.then(res => {
+        console.log(res)
+        navigate("/")
+    })
+    promise.catch(err => {
+        alert(err.response.data.message)
+        setLogged(false)
+        setName("")
+        setPassword("")
+        setImage("")
+        setEmail("")
+    })
+
+}
+
+
+
+
+
     return(
         <ScreenContainer>
             <Logo src={logo}/>
-            <Form>
+            <Form onSubmit={addUser}>
             <input
+            data-test="email-input"
+            disabled={logged? "disabled" : ""}
             type="text"
             placeholder="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
             />
 
             <input
+            data-test="password-input"
+            disabled={logged? "disabled" : ""}
             type="text"
             placeholder="senha"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
             />
 
             <input
+            data-test="user-name-input"
+            disabled={logged? "disabled" : ""}
             type="text"
             placeholder="nome"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
             />
 
             <input
+            data-test="user-image-input"
+            disabled={logged? "disabled" : ""}
             type="text"
             placeholder="foto"
+            value={image}
+            onChange={e => setImage(e.target.value)}
+            required
             />
-
-            <RegisterButton>Cadastrar</RegisterButton>
+             
+            <RegisterButton data-test="signup-btn" type="submit">Cadastrar</RegisterButton>
+            <Link data-test="login-link" to={"/"}>
             <p>Já tem uma conta? Faça login!</p>
+            </Link>
             </Form>
         </ScreenContainer>
     )
