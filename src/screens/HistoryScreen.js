@@ -31,6 +31,7 @@ padding:0 18px;
 background-color:#E5E5E5;
 height: 100vh;
 width:100%;
+margin-top: 70px;
 span{
     font-weight: 400;
     font-size: 17.976px;

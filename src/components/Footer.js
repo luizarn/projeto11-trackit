@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Icon from '../assets/Ellipse.png'
 
@@ -6,12 +7,15 @@ export default function Footer(){
 return(
 
 <FooterContainer>
-
+    <Link to={"/habitos"}>
     <h1>Hábitos</h1>
+    </Link>
+    <Link to={"/hoje"}>
     <IconFooter src={Icon}/>
-
+    </Link>
+    <Link to={"/historico"}>
     <h1>Histórico</h1>
-
+    </Link>
 </FooterContainer>
 )
 }
@@ -26,8 +30,6 @@ align-items:center;
 padding:0 18px;
 position: fixed;
 bottom:0;
-
-
 h1{
     font-weight: 400;
     font-size: 17.976px;

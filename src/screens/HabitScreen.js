@@ -3,8 +3,24 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import AddHabit from "../components/AddHabit";
 import MyHabits from "../components/MyHabits";
+import { useState } from "react";
 
 export default function HabitScreen(){
+const [add, setAdd] = useState(false)
+
+
+    // useEffect(() => {
+    //     const URL = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
+    //     const promise = axios.get(URL)
+    //     promise.then(res => setSessionSeat(res.data))     
+    
+    //     promise.catch(err => console.log(err.response.data)) 
+    // }, [])
+
+    function addTask(){
+        setAdd(true)
+    }
+
     return(
         <>
    
@@ -12,15 +28,15 @@ export default function HabitScreen(){
         <Container>
             <DivAddHabit>
                 <h1>Meus hábitos</h1>
-                <AddButton>+</AddButton>
+                <AddButton onClick={(addTask)}>+</AddButton>
             </DivAddHabit>
 
-            {/* <AddHabit/> */}
-            <MyHabits/>
+            {add && <AddHabit/> }
+            {/* <MyHabits/> */}
 
-            {/* <span>
+           <span>
                 Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear
-            </span> */}
+            </span> 
         </Container>
         <Footer/>
         </>
@@ -35,6 +51,7 @@ padding:0 18px;
 background-color:#E5E5E5;
 height: 100vh;
 width:100%;
+margin-top: 70px;
 span{
     font-weight: 400;
     font-size: 17.976px;

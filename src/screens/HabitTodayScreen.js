@@ -46,6 +46,50 @@ export default function HabitTodayScreen(){
                 <img src={iconCheck} alt="check"/>
             </Check>
             </BoxHabit>
+
+            <BoxHabit>
+            <StyledHabit>
+                <h1>Ler 1 capítulo de livro</h1>
+                <h2>Sequência atual: 3 dias</h2>
+                <h2>Seu recorde: 5 dias</h2>
+            </StyledHabit>
+            <Check>
+                <img src={iconCheck} alt="check"/>
+            </Check>
+            </BoxHabit>
+
+            <BoxHabit>
+            <StyledHabit>
+                <h1>Ler 1 capítulo de livro</h1>
+                <h2>Sequência atual: 3 dias</h2>
+                <h2>Seu recorde: 5 dias</h2>
+            </StyledHabit>
+            <Check>
+                <img src={iconCheck} alt="check"/>
+            </Check>
+            </BoxHabit>
+
+            <BoxHabit>
+            <StyledHabit>
+                <h1>Ler 1 capítulo de livro</h1>
+                <h2>Sequência atual: 3 dias</h2>
+                <h2>Seu recorde: 5 dias</h2>
+            </StyledHabit>
+            <Check>
+                <img src={iconCheck} alt="check"/>
+            </Check>
+            </BoxHabit>
+
+            <BoxHabit>
+            <StyledHabit>
+                <h1>Ler 1 capítulo de livro</h1>
+                <h2>Sequência atual: 3 dias</h2>
+                <h2>Seu recorde: 5 dias</h2>
+            </StyledHabit>
+            <Check>
+                <img src={iconCheck} alt="check"/>
+            </Check>
+            </BoxHabit>
         </Container>
         <Footer/>
         </>
@@ -110,6 +154,7 @@ padding:0 18px;
 background-color:#E5E5E5;
 height: 100vh;
 width:100%;
+margin-top: 70px;
 span{
     font-weight: 400;
     font-size: 17.976px;

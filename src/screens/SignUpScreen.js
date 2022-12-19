@@ -4,6 +4,7 @@ import { useState } from "react"
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom'
+import loading from '../assets/loading.gif'
 
 export default function SignUpScreen(){
 
@@ -88,8 +89,15 @@ function addUser(e){
             onChange={e => setImage(e.target.value)}
             required
             />
-             
+            
+            {!logged ? (
             <RegisterButton data-test="signup-btn" type="submit">Cadastrar</RegisterButton>
+           ) : (
+            <RegisterButton data-test="signup-btn" type="submit">
+            <img src={loading} /> </RegisterButton>
+            )} 
+
+           
             <Link data-test="login-link" to={"/"}>
             <p>Já tem uma conta? Faça login!</p>
             </Link>
@@ -135,6 +143,10 @@ const RegisterButton = styled.button`
     color: #FFFFFF;
     border:none;
     margin-bottom:25px;
+    img{
+        width: 51px;
+        height: 40px;
+    }
 `
 
 const Form = styled.form`

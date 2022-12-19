@@ -22,6 +22,9 @@ display:flex;
 justify-content: space-between;
 align-items:center;
 padding:0 18px;
+position:fixed;
+top:0;
+z-index: 2;
 h1{
     font-family: 'Playball';
     font-weight: 400;
@@ -32,6 +35,6 @@ h1{
 img{
     width: 51px;
     height: 51px;
+    border-radius: 98.5px;
 }
-
 `

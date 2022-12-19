@@ -1,30 +1,86 @@
+
 import styled from "styled-components"
+import axios from 'axios'
+import AuthorizationContext from '../contexts/AuthorizationContext'
+import { useState, useContext } from "react";
+import loading from '../assets/loading.gif'
 
 export default function AddHabit(){
 
-const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
+const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
+const [name, setName] = useState("")
+const [days, setDays] = useState([])
+const [loader, setLoader] = useState(false)
+const [token, setToken] = useContext(AuthorizationContext)
+
+
+
+
+
+
+ function chooseDay(i){
+    const newArray = [...days, i]
+    setDays(newArray)
+    console.log(days)
+
+ }
+
+
+function enviar(e){
+    e.preventDefault()
+    setLoader(true)
+    const informations = { name, days }
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const promise = axios.post(URL, informations, {headers: {Authorization : `Bearer ${token}`}})
+    promise.then(res => {
+        console.log(res.data)
+        setLoader(false)})     
+
+    promise.catch(err => {
+        alert(err.response.data.message)
+        setLoader(false)
+        }) 
+}
+
     return(
         <BoxHabit>
+           
+            <form onSubmit={enviar}>
             <input
+            disabled={loader? "disabled" : ""}
             type="text"
             placeholder="nome do hábito"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            min={3}
+            required
             />
+            
             <ButtonContainer>
-                {weekdays.map((d) => (
-                    <DayButton>{d}</DayButton>
+                {weekdays.map((d, i) => (  
+                    
+                    <DayButton  
+                    disabled={(loader === true) ? true : false}
+                    onClick={() => chooseDay(i)} 
+                    key={i}>
+                        {d}
+                    </DayButton>
                 ))}
             </ButtonContainer>
             
             <CancellorSave>
                 <h1>Cancelar</h1>
-                <button>Salvar</button>
+                {loader ? (
+                <button type="submit" disabled="disabled">  <img src={loading} /></button>) : (
+                <button type="submit">Salvar</button>)}
             </CancellorSave>
-            
+            </form>
             
         </BoxHabit>
     )
 }
 
+ {/* <Form onSubmit={addLogin}> */}
 const BoxHabit = styled.div`
 width: 340px;
 height: 180px;
@@ -99,6 +155,10 @@ margin-right:16px;
         border:none;
         border-radius: 5px;
         margin-left:23px;
+    }
+    img{
+        width: 51px;
+        height: 40px;
     }
 `
 

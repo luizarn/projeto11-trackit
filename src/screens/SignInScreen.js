@@ -5,11 +5,14 @@ import { useContext, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import ImageContext from '../contexts/ImageContext'
+import loading from '../assets/loading.gif'
+import AuthorizationContext from '../contexts/AuthorizationContext'
 
 export default function WelcomeScreen(){
 const [email, setEmail] = useState("")
 const [password, setPassword] = useState("")
 const [imageProfile, setImageProfile] = useContext(ImageContext)
+const [token, setToken] = useContext(AuthorizationContext)
 const [logged, setLogged] = useState(false)
 const navigate = useNavigate()
 
@@ -25,8 +28,10 @@ function addLogin(e){
 
     promise.then(res => {
         console.log(res.data)
-        navigate("/hoje")
         setImageProfile(res.data.image)
+        setToken(res.data.token)
+        console.log(res.data.token)
+        navigate("/hoje")
     })
     promise.catch(err => {
         alert(err.response.data.message)
@@ -61,7 +66,12 @@ function addLogin(e){
             required
             />
            
-            <OpenButton data-test="login-btn">Entrar</OpenButton>
+           {!logged ? (
+           <OpenButton data-test="login-btn" type="submit"> Entrar</OpenButton>
+           ) : (
+            <OpenButton data-test="login-btn"> 
+            <img src={loading} /> </OpenButton>
+            )} 
             <Link to={"/cadastro"}>
             <p data-test="singup-link">Não tem uma conta? Cadastra-se!</p>
             </Link>
@@ -107,6 +117,10 @@ const OpenButton = styled.button`
     color: #FFFFFF;
     border:none;
     margin-bottom:25px;
+    img{
+        width: 51px;
+        height: 40px;
+    }
 `
 
 const Form = styled.form`
