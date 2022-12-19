@@ -31,12 +31,11 @@ const [add, setAdd] = useState(false)
                 <AddButton onClick={(addTask)}>+</AddButton>
             </DivAddHabit>
 
-            {add && <AddHabit/> }
-            {/* <MyHabits/> */}
-
-           <span>
-                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear
-            </span> 
+            {add && <AddHabit 
+            setAdd={setAdd}
+            /> }
+            {!add && <MyHabits
+            setAdd={setAdd}/>}
         </Container>
         <Footer/>
         </>
@@ -49,7 +48,7 @@ display:flex;
 flex-direction:column;
 padding:0 18px;
 background-color:#E5E5E5;
-height: 100vh;
+height: 400vh;
 width:100%;
 margin-top: 70px;
 span{

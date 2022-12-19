@@ -1,48 +1,76 @@
 import styled from "styled-components"
 import Trash from '../assets/trashcan.png'
+import { useState, useContext, useEffect } from "react";
+import AuthorizationContext from '../contexts/AuthorizationContext'
+import axios from 'axios'
+import DaysButtons from "./DaysButtons";
+import { useNavigate } from "react-router-dom";
 
-export default function MyHabits(){
-
+export default function MyHabits({setAdd}){
+const [habitsMade, setHbaitsMade] = useState(undefined)
+const [token, setToken] = useContext(AuthorizationContext)
 const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
-    return(
-        <>
-        <BoxHabit>
-            <StyledBox>
-                <h1>Ler 1 capítulo de livro</h1>
-                <img src={Trash} alt="lixeira" />
-            </StyledBox>
-            <ButtonContainer>
-                {weekdays.map((d) => (
-                    <DayButton>{d}</DayButton>
-                ))}
-            </ButtonContainer>
-        </BoxHabit>
+const navigate = useNavigate()
 
-        <BoxHabit>
-        <StyledBox>
-            <h1>Ler 1 capítulo de livro</h1>
-            <img src={Trash} alt="lixeira" />
-        </StyledBox>
-        <ButtonContainer>
-            {weekdays.map((d) => (
-                <DayButton>{d}</DayButton>
-            ))}
-        </ButtonContainer>
-        </BoxHabit>
+function refreshHabits(){
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const promise = axios.get(URL, 
+        {headers: 
+            {Authorization : `Bearer ${token}`}
+        })
+    promise.then(res => setHbaitsMade(res.data))     
 
-        <BoxHabit>
-                <StyledBox>
-                <h1>Ler 1 capítulo de livro</h1>
-                <img src={Trash} alt="lixeira" />
-            </StyledBox>
-            <ButtonContainer>
-                {weekdays.map((d) => (
-                    <DayButton>{d}</DayButton>
-                ))}
-            </ButtonContainer>
-        </BoxHabit>
-        </>
-    )
+    promise.catch(err => console.log(err.response.data)) 
+
+
+}
+ refreshHabits()
+
+
+    function deleteHabit(idhabito){
+       if (window.confirm("Você tem certeza que quer excluir esse hábito?")){
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${idhabito}`
+   const promise = axios.delete(URL, {headers: {Authorization : `Bearer ${token}`}})
+   promise.then(res => {
+    console.log(res.data, "deu certo!")
+    refreshHabits()}
+    )  
+   promise.catch(err => console.log(err.response.data))  
+       }
+    }
+
+
+    if (habitsMade === undefined) {
+        return  (
+        <span>
+        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear
+    </span> )
+    } else {
+        return(
+            <>
+            {habitsMade.map((h, i) => (
+                        <BoxHabit key={h.id}>
+                        <StyledBox key={i}>
+                            <h1>{h.name}</h1>
+                            <img src={Trash} alt="lixeira" onClick={() => deleteHabit(h.id)}/>
+                        </StyledBox>
+                        <ButtonContainer>
+                            {weekdays.map((d, i) => (
+                                <DaysButtons
+                                isSelected={h.days.some((s) => s === i)}
+                                key={i}
+                                d={d}
+                                index={i}/>
+                            ))}
+                        </ButtonContainer>
+                    </BoxHabit>
+            )
+            
+            )}
+           
+            </>
+        )
+}
 }
 
 const BoxHabit = styled.div`

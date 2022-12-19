@@ -2,16 +2,24 @@
 import styled from "styled-components"
 import axios from 'axios'
 import AuthorizationContext from '../contexts/AuthorizationContext'
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import loading from '../assets/loading.gif'
+import DaysButtons from "./DaysButtons";
 
-export default function AddHabit(){
+export default function AddHabit({setAdd}){
 
-const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
+    const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
+    // {id: 0, day:"D" },
+    // {id: 1, day:"S"},
+    // {id: 2, day: "T"}, 
+    // {id:"T", "Q", "Q", "S", "S"};
 const [name, setName] = useState("")
 const [days, setDays] = useState([])
 const [loader, setLoader] = useState(false)
 const [token, setToken] = useContext(AuthorizationContext)
+
+// const [clicked, setClicked] = useState([])
+
 
 
 
@@ -19,12 +27,26 @@ const [token, setToken] = useContext(AuthorizationContext)
 
 
  function chooseDay(i){
-    const newArray = [...days, i]
-    setDays(newArray)
-    console.log(days)
+    // const newArray = [...days, i]
+    // setDays(newArray)
+    // console.log(days)
+  const isSelected = days.some((s) => s === i)
+        if (isSelected) {
+                const unselect = window.confirm("tem certeza que quer retirar esse dia?")
+                // setStatus("available")
 
- }
-
+                if (unselect) {
+                    const newList = days.filter((s) => s !== i)
+                    setDays(newList)
+                    }
+                }
+        else{
+            setDays([...days, i])
+            // setStatus("selected")
+        }  
+        
+        console.log(days)
+    }
 
 function enviar(e){
     e.preventDefault()
@@ -34,13 +56,18 @@ function enviar(e){
     const promise = axios.post(URL, informations, {headers: {Authorization : `Bearer ${token}`}})
     promise.then(res => {
         console.log(res.data)
-        setLoader(false)})     
+        setLoader(false)
+        setName("")
+        setDays([])
+        setAdd(false)
+        })     
 
     promise.catch(err => {
         alert(err.response.data.message)
         setLoader(false)
         }) 
 }
+
 
     return(
         <BoxHabit>
@@ -58,18 +85,18 @@ function enviar(e){
             
             <ButtonContainer>
                 {weekdays.map((d, i) => (  
-                    
-                    <DayButton  
+                    <DaysButtons
                     disabled={(loader === true) ? true : false}
-                    onClick={() => chooseDay(i)} 
-                    key={i}>
-                        {d}
-                    </DayButton>
+                    chooseDay={chooseDay}
+                    isSelected={days.some((s) => s === i)}
+                    key={i}
+                    d={d}
+                    index={i}/>
                 ))}
             </ButtonContainer>
             
             <CancellorSave>
-                <h1>Cancelar</h1>
+                <h1 onClick={() => setAdd(false)}>Cancelar</h1>
                 {loader ? (
                 <button type="submit" disabled="disabled">  <img src={loading} /></button>) : (
                 <button type="submit">Salvar</button>)}
@@ -80,7 +107,7 @@ function enviar(e){
     )
 }
 
- {/* <Form onSubmit={addLogin}> */}
+
 const BoxHabit = styled.div`
 width: 340px;
 height: 180px;
@@ -114,21 +141,21 @@ padding-left: 19px;
 padding-top: 8px;
 `
 
-const DayButton = styled.div`
-width: 30px;
-height: 30px;
-background: #FFFFFF;
-border-radius: 5px;
-border: 1px solid #D5D5D5;
-color: #DBDBDB;
-font-weight: 400;
-font-size: 19.976px;
-line-height: 25px;
-display:flex;
-justify-content:center;
-align-items:center;
-margin:4px;
-`
+// const DayButton = styled.div`
+// width: 30px;
+// height: 30px;
+// background-color: ${props => dayColors[props.status].background};
+// border-radius: 5px;
+// border: 1px solid #D5D5D5;
+// color: ${props => dayColors[props.status].color};
+// font-weight: 400;
+// font-size: 19.976px;
+// line-height: 25px;
+// display:flex;
+// justify-content:center;
+// align-items:center;
+// margin:4px;
+// `
 
 const CancellorSave = styled.div`
 display:flex;
