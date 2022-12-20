@@ -1,23 +1,25 @@
 import styled from "styled-components"
 import Footer from "../components/Footer"
 import Navbar from "../components/NavBar"
-import iconCheck from '../assets/iconCheck.png'
 import { useState, useContext, useEffect } from "react";
 import AuthorizationContext from '../contexts/AuthorizationContext'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import RenderHabit from "../components/RenderHabit";
 
 export default function HabitTodayScreen(){
 
-
+let days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 const [todayHabit, setTodayHabit] = useState(undefined)
 const [token] = useContext(AuthorizationContext)
-const today = dayjs();
+let day = dayjs().day()
+const [concluded, setConcluded] = useState([])
+const division = concluded.length / todayHabit.length
 
 
     useEffect(() => {
 
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const promise = axios.get(URL, 
             {headers: 
                 {Authorization : `Bearer ${token}`}
@@ -30,33 +32,59 @@ const today = dayjs();
         
     }, [])
 
-   
-    
-
     if (todayHabit === undefined) {
         return <div>Carregando...</div>
     }
+
+    function changeCheck(habit){
+        console.log(concluded)
+       const isSelected = concluded.some((s) => s === habit)
+        if (isSelected) {
+                    const newList = concluded.filter((s) => s !== habit)
+                    setConcluded(newList)
+                    
+            const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`
+            const promise = axios.post(URL, {}, {headers: {Authorization : `Bearer ${token}`}})
+            promise.then(res => {
+                console.log(res.data)
+                })     
+        
+            promise.catch(err => {
+                alert(err.response.data.message)
+                })         
+        }    
+        else{
+            setConcluded([...concluded, habit])
+            const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`
+            const promise = axios.post(URL, {}, {headers: {Authorization : `Bearer ${token}`}})
+            promise.then(res => {
+                console.log(res.data)
+                })     
+        
+            promise.catch(err => {
+                alert(err.response.data.message)
+                }) 
+        }
+        }  
+    
 
     return(
         <>
                <Navbar/>
         <Container>
             <DayHabit>
-                <h1 data-test="today">{today.day},</h1>
-                <h2 data-test="today-counter">Nenhum hábito concluído ainda</h2>
+                <h1 data-test="today">{days[day]}, {dayjs().format('DD/MM')}</h1>
+                {(concluded.length === 0) ? (<h2 data-test="today-counter">Nenhum hábito concluído ainda</h2>) :
+                (<h2 data-test="today-counter">{division*100}% dos hábitos concluídos</h2>)}
             </DayHabit>
-        {todayHabit.map((h) => (
-            <BoxHabit data-test="today-habit">
-            <StyledHabit>
-                <h1 data-test="today-habit-name">{h.name}</h1>
-                <h2 data-test="today-habit-sequence">Sequência atual: {h.currentSequence}</h2>
-                <h2 data-test="today-habit-record">Seu recorde: {h.highestSequence}</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check" data-test="today-habit-check-btn"/>
-            </Check>
-            </BoxHabit>
-
+            
+        {todayHabit.map((habit) => (
+                 <RenderHabit
+                 key={habit.id}
+                changeCheck={changeCheck}
+                isSelected={concluded.some((s) => s === habit)}
+                 habit={habit}
+                 />
         ))}
         </Container>
         <Footer/>
@@ -64,37 +92,7 @@ const today = dayjs();
     )
 }
 
-const BoxHabit = styled.div`
-width: 340px;
-height: 94px;
-background: #FFFFFF;
-border-radius: 5px;
-display:flex;
-justify-content:space-between;
-margin-bottom: 10px;
-`
 
-const StyledHabit = styled.div`
-display:flex;
-flex-direction:column;
-justify-content:center;
-margin-top:13px;
-margin-right:10px;
-margin-left:15px;
-    h1{
-        font-size: 18px;
-        font-weight: 400;
-        font-size: 19.976px;
-        line-height: 25px;
-        color: #666666;
-    }
-    h2{
-        font-weight: 400;
-        font-size: 12.976px;
-        line-height: 16px;
-        color: #666666;
-    }
-`
 const DayHabit = styled.div`
    display:flex;
    flex-direction:column;
@@ -129,15 +127,4 @@ span{
     line-height: 22px;
     color: #666666;
 }
-`
-const Check = styled.div`
-width: 69px;
-height: 69px;
-background: #EBEBEB;
-border: 1px solid #E7E7E7;
-border-radius: 5px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin:13px 13px;
 `

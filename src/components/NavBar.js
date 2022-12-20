@@ -3,10 +3,10 @@ import ImageContext from '../contexts/ImageContext'
 import { useContext } from 'react'
 
 export default function Navbar(){
-const [imageProfile, setImageProfile] = useContext(ImageContext)
+const [imageProfile] = useContext(ImageContext)
 
 return(
-<NavContainer>
+<NavContainer data-test="header">
     <h1>TrackIt</h1>
     <img src={imageProfile} alt="imagem"/>
 </NavContainer>
