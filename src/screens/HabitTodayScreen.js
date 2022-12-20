@@ -14,7 +14,7 @@ const [todayHabit, setTodayHabit] = useState(undefined)
 const [token] = useContext(AuthorizationContext)
 let day = dayjs().day()
 const [concluded, setConcluded] = useState([])
-const division = concluded.length / todayHabit.length
+
 
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const division = concluded.length / todayHabit.length
             <DayHabit>
                 <h1 data-test="today">{days[day]}, {dayjs().format('DD/MM')}</h1>
                 {(concluded.length === 0) ? (<h2 data-test="today-counter">Nenhum hábito concluído ainda</h2>) :
-                (<h2 data-test="today-counter">{division*100}% dos hábitos concluídos</h2>)}
+                (<h2 data-test="today-counter">{(concluded.length/todayHabit.lenght)*100}% dos hábitos concluídos</h2>)}
             </DayHabit>
             
         {todayHabit.map((habit) => (
