@@ -72,7 +72,6 @@ function enviar(e){
             value={name}
             onChange={e => setName(e.target.value)}
             min={3}
-            required
             />
             
             <ButtonContainer>
@@ -88,10 +87,13 @@ function enviar(e){
             </ButtonContainer>
             
             <CancellorSave>
-                <h1 data-test="habit-create-cancel-btn" onClick={() => setAdd(false)}>Cancelar</h1>
                 {loader ? (
-                <button type="submit" disabled="disabled" data-test="habit-create-save-btn">  <img src={loading} alt="loading"/></button>) : (
-                <button type="submit" data-test="habit-create-save-btn">Salvar</button>)}
+                <CancellButton data-test="habit-create-cancel-btn" disabled="disabled">Cancelar</CancellButton>) : (
+                    <CancellButton data-test="habit-create-cancel-btn" onClick={() => setAdd(false)}>Cancelar</CancellButton> 
+                )}
+                {loader ? (
+                <SaveButton type="submit" disabled="disabled" data-test="habit-create-save-btn">  <img src={loading} alt="loading"/></SaveButton>) : (
+                <SaveButton type="submit" data-test="habit-create-save-btn">Salvar</SaveButton>)}
             </CancellorSave>
             </form>
             
@@ -133,51 +135,48 @@ padding-left: 19px;
 padding-top: 8px;
 `
 
-// const DayButton = styled.div`
-// width: 30px;
-// height: 30px;
-// background-color: ${props => dayColors[props.status].background};
-// border-radius: 5px;
-// border: 1px solid #D5D5D5;
-// color: ${props => dayColors[props.status].color};
-// font-weight: 400;
-// font-size: 19.976px;
-// line-height: 25px;
-// display:flex;
-// justify-content:center;
-// align-items:center;
-// margin:4px;
-// `
-
 const CancellorSave = styled.div`
 display:flex;
 justify-content: flex-end;
 align-items:center;
 margin-top:20px;
 margin-right:16px;
-    h1{
-        font-weight: 400;
-        font-size: 15.976px;
-        line-height: 20px;
-        text-align: center;
-        color: #52B6FF;
-    }
-    button{
-        width: 84px;
-        height: 35px;
-        font-weight: 400;
-        font-size: 15.976px;
-        line-height: 20px;
-        text-align: center;
-        color: #FFFFFF;
-        background-color:#52B6FF;
-        border:none;
-        border-radius: 5px;
-        margin-left:23px;
-    }
     img{
         width: 51px;
         height: 40px;
     }
+`
+const CancellButton = styled.button`
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width: 84px;
+    height: 35px;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 20px;
+    text-align: center;
+    color: #52B6FF;
+    background-color: #FFFFFF;
+    border:none;
+    border-radius: 5px;
+    margin-left:15.5px;
+`
+
+const SaveButton = styled.button`
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width: 84px;
+    height: 35px;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 20px;
+    text-align: center;
+    color: #FFFFFF;
+    background-color:#52B6FF;
+    border:none;
+    border-radius: 5px;
+    margin-left:15.5px;
 `
 
