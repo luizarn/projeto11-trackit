@@ -53,7 +53,7 @@ function addUser(e){
             <input
             data-test="email-input"
             disabled={logged? "disabled" : ""}
-            type="text"
+            type="email"
             placeholder="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -63,7 +63,7 @@ function addUser(e){
             <input
             data-test="password-input"
             disabled={logged? "disabled" : ""}
-            type="text"
+            type="password"
             placeholder="senha"
             value={password}
             onChange={e => setPassword(e.target.value)}
@@ -83,7 +83,7 @@ function addUser(e){
             <input
             data-test="user-image-input"
             disabled={logged? "disabled" : ""}
-            type="text"
+            type="url"
             placeholder="foto"
             value={image}
             onChange={e => setImage(e.target.value)}

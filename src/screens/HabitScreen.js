@@ -28,7 +28,7 @@ const [add, setAdd] = useState(false)
         <Container>
             <DivAddHabit>
                 <h1>Meus hábitos</h1>
-                <AddButton onClick={(addTask)}>+</AddButton>
+                <AddButton data-test="habit-create-btn" onClick={(addTask)}>+</AddButton>
             </DivAddHabit>
 
             {add && <AddHabit 

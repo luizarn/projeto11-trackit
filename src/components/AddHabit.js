@@ -2,23 +2,20 @@
 import styled from "styled-components"
 import axios from 'axios'
 import AuthorizationContext from '../contexts/AuthorizationContext'
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext} from "react";
 import loading from '../assets/loading.gif'
 import DaysButtons from "./DaysButtons";
 
 export default function AddHabit({setAdd}){
 
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
-    // {id: 0, day:"D" },
-    // {id: 1, day:"S"},
-    // {id: 2, day: "T"}, 
-    // {id:"T", "Q", "Q", "S", "S"};
+
 const [name, setName] = useState("")
 const [days, setDays] = useState([])
 const [loader, setLoader] = useState(false)
-const [token, setToken] = useContext(AuthorizationContext)
+const [token] = useContext(AuthorizationContext)
 
-// const [clicked, setClicked] = useState([])
+
 
 
 
@@ -27,13 +24,10 @@ const [token, setToken] = useContext(AuthorizationContext)
 
 
  function chooseDay(i){
-    // const newArray = [...days, i]
-    // setDays(newArray)
-    // console.log(days)
+ 
   const isSelected = days.some((s) => s === i)
         if (isSelected) {
                 const unselect = window.confirm("tem certeza que quer retirar esse dia?")
-                // setStatus("available")
 
                 if (unselect) {
                     const newList = days.filter((s) => s !== i)
@@ -42,10 +36,7 @@ const [token, setToken] = useContext(AuthorizationContext)
                 }
         else{
             setDays([...days, i])
-            // setStatus("selected")
         }  
-        
-        console.log(days)
     }
 
 function enviar(e){
@@ -70,10 +61,11 @@ function enviar(e){
 
 
     return(
-        <BoxHabit>
+        <BoxHabit data-test="habit-create-container">
            
             <form onSubmit={enviar}>
             <input
+            data-test="habit-name-input"
             disabled={loader? "disabled" : ""}
             type="text"
             placeholder="nome do hábito"
@@ -86,6 +78,7 @@ function enviar(e){
             <ButtonContainer>
                 {weekdays.map((d, i) => (  
                     <DaysButtons
+                    data-test="habit-day"
                     disabled={(loader === true) ? true : false}
                     chooseDay={chooseDay}
                     isSelected={days.some((s) => s === i)}
@@ -96,10 +89,10 @@ function enviar(e){
             </ButtonContainer>
             
             <CancellorSave>
-                <h1 onClick={() => setAdd(false)}>Cancelar</h1>
+                <h1 data-test="habit-create-cancel-btn" onClick={() => setAdd(false)}>Cancelar</h1>
                 {loader ? (
-                <button type="submit" disabled="disabled">  <img src={loading} /></button>) : (
-                <button type="submit">Salvar</button>)}
+                <button type="submit" disabled="disabled" data-test="habit-create-save-btn">  <img src={loading} alt="loading"/></button>) : (
+                <button type="submit" data-test="habit-create-save-btn">Salvar</button>)}
             </CancellorSave>
             </form>
             

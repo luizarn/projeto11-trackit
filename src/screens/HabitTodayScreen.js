@@ -2,94 +2,62 @@ import styled from "styled-components"
 import Footer from "../components/Footer"
 import Navbar from "../components/NavBar"
 import iconCheck from '../assets/iconCheck.png'
+import { useState, useContext, useEffect } from "react";
+import AuthorizationContext from '../contexts/AuthorizationContext'
+import axios from 'axios'
+import dayjs from 'dayjs'
 
 export default function HabitTodayScreen(){
+
+
+const [todayHabit, setTodayHabit] = useState(undefined)
+const [token] = useContext(AuthorizationContext)
+const today = dayjs();
+
+
+    useEffect(() => {
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const promise = axios.get(URL, 
+            {headers: 
+                {Authorization : `Bearer ${token}`}
+            })
+        promise.then(res => {
+            console.log(res.data)
+            setTodayHabit(res.data)})     
+    
+        promise.catch(err => console.log(err.response.data)) 
+        
+    }, [])
+
+   
+    
+
+    if (todayHabit === undefined) {
+        return <div>Carregando...</div>
+    }
 
     return(
         <>
                <Navbar/>
         <Container>
             <DayHabit>
-                <h1>Segunda, 17/05</h1>
-                <h2>Nenhum hábito concluído ainda</h2>
+                <h1 data-test="today">{today.day},</h1>
+                <h2 data-test="today-counter">Nenhum hábito concluído ainda</h2>
             </DayHabit>
-        
-            <BoxHabit>
+        {todayHabit.map((h) => (
+            <BoxHabit data-test="today-habit">
             <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
+                <h1 data-test="today-habit-name">{h.name}</h1>
+                <h2 data-test="today-habit-sequence">Sequência atual: {h.currentSequence}</h2>
+                <h2 data-test="today-habit-record">Seu recorde: {h.highestSequence}</h2>
             </StyledHabit>
             <Check>
-                <img src={iconCheck} alt="check"/>
+                <img src={iconCheck} alt="check" data-test="today-habit-check-btn"/>
             </Check>
             </BoxHabit>
 
-            <BoxHabit>
-            <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check"/>
-            </Check>
-            </BoxHabit>
-
-            <BoxHabit>
-            <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check"/>
-            </Check>
-            </BoxHabit>
-
-            <BoxHabit>
-            <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check"/>
-            </Check>
-            </BoxHabit>
-
-            <BoxHabit>
-            <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check"/>
-            </Check>
-            </BoxHabit>
-
-            <BoxHabit>
-            <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check"/>
-            </Check>
-            </BoxHabit>
-
-            <BoxHabit>
-            <StyledHabit>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
-            </StyledHabit>
-            <Check>
-                <img src={iconCheck} alt="check"/>
-            </Check>
-            </BoxHabit>
+        ))}
         </Container>
         <Footer/>
         </>

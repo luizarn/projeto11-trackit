@@ -1,16 +1,15 @@
 import styled from "styled-components"
 import Trash from '../assets/trashcan.png'
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import AuthorizationContext from '../contexts/AuthorizationContext'
 import axios from 'axios'
 import DaysButtons from "./DaysButtons";
-import { useNavigate } from "react-router-dom";
+
 
 export default function MyHabits({setAdd}){
 const [habitsMade, setHbaitsMade] = useState(undefined)
-const [token, setToken] = useContext(AuthorizationContext)
+const [token] = useContext(AuthorizationContext)
 const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"]
-const navigate = useNavigate()
 
 function refreshHabits(){
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
@@ -49,14 +48,15 @@ function refreshHabits(){
         return(
             <>
             {habitsMade.map((h, i) => (
-                        <BoxHabit key={h.id}>
+                        <BoxHabit key={h.id} data-test="habit-container">
                         <StyledBox key={i}>
-                            <h1>{h.name}</h1>
-                            <img src={Trash} alt="lixeira" onClick={() => deleteHabit(h.id)}/>
+                            <h1 data-test="habit-name">{h.name}</h1>
+                            <img src={Trash} alt="lixeira" onClick={() => deleteHabit(h.id)} data-test="habit-delete-btn"/>
                         </StyledBox>
                         <ButtonContainer>
                             {weekdays.map((d, i) => (
                                 <DaysButtons
+                                data-test="habit-day"
                                 isSelected={h.days.some((s) => s === i)}
                                 key={i}
                                 d={d}
@@ -87,22 +87,6 @@ display:flex;
 justify-content:flex-start;
 padding-left: 15px;
 padding-top: 8px;
-`
-
-const DayButton = styled.div`
-width: 30px;
-height: 30px;
-background: #FFFFFF;
-border-radius: 5px;
-border: 1px solid #D5D5D5;
-color: #DBDBDB;
-font-weight: 400;
-font-size: 19.976px;
-line-height: 25px;
-display:flex;
-justify-content:center;
-align-items:center;
-margin:2px;
 `
 
 const StyledBox = styled.div`
