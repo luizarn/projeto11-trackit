@@ -93,7 +93,7 @@ function addUser(e){
             {!logged ? (
             <RegisterButton data-test="signup-btn" type="submit">Cadastrar</RegisterButton>
            ) : (
-            <RegisterButton data-test="signup-btn" type="submit">
+            <RegisterButton data-test="signup-btn" type="submit" disabled="disabled">
             <img src={loading} /> </RegisterButton>
             )} 
 

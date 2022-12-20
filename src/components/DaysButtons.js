@@ -17,6 +17,7 @@ useEffect(() => {
 
     return(
             <DayButton  
+            data-test="habit-day"
             onClick={() => chooseDay(index)}
             status={status}>
                 {d}

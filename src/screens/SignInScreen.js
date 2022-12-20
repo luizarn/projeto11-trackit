@@ -69,7 +69,7 @@ function addLogin(e){
            {!logged ? (
            <OpenButton data-test="login-btn" type="submit"> Entrar</OpenButton>
            ) : (
-            <OpenButton data-test="login-btn"> 
+            <OpenButton data-test="login-btn" disabled="disabled"> 
             <img src={loading} /> </OpenButton>
             )} 
             <Link to={"/cadastro"}>

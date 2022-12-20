@@ -78,7 +78,6 @@ function enviar(e){
             <ButtonContainer>
                 {weekdays.map((d, i) => (  
                     <DaysButtons
-                    data-test="habit-day"
                     disabled={(loader === true) ? true : false}
                     chooseDay={chooseDay}
                     isSelected={days.some((s) => s === i)}
